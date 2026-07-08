@@ -15,7 +15,7 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Cerebras integration (gpt-oss-120b)
 
 ## Phase 1 — Reliability (NEXT)
-- [ ] Fix "done" detection so it doesn't loop/repeat actions
+- [x] Fix "done" detection so it doesn't loop/repeat actions
 - [ ] Error recovery: retry when an element disappears or page doesn't load
 - [ ] Handle popups/cookie banners automatically
 - [ ] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
