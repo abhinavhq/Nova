@@ -74,6 +74,35 @@ class NovaBrowser:
         self.page.goto(url, wait_until="domcontentloaded", timeout=30000)
         # small buffer for JS-heavy pages to settle
         self.page.wait_for_timeout(1000)
+        self.dismiss_common_popups()
+
+    def dismiss_common_popups(self):
+        """
+        Best-effort attempt to close cookie-consent banners and similar
+        overlay popups that block interaction on most real-world sites.
+
+        This is deliberately "fire and forget": if nothing matches, it does
+        nothing and moves on quickly. It should never raise or block the
+        agent loop — a missed popup just means perception might see it as
+        an extra clickable element, which the LLM can still handle.
+        """
+        # common phrases used on consent/overlay buttons, checked in order
+        common_labels = [
+            "Accept all", "Accept All", "Accept Cookies", "I Accept",
+            "Accept", "I Agree", "Agree", "Got it", "Ok", "OK",
+            "Allow all", "Allow All", "Continue", "Close",
+        ]
+        for label in common_labels:
+            try:
+                btn = self.page.get_by_role("button", name=label, exact=False)
+                if btn.count() > 0 and btn.first.is_visible(timeout=500):
+                    btn.first.click(timeout=1000)
+                    print(f"[NovaBrowser] Dismissed popup via button: '{label}'")
+                    self.page.wait_for_timeout(300)
+                    return  # one dismissal per nav is usually enough
+            except Exception:
+                # not present, not visible, or click failed - just move on
+                continue
 
     def screenshot(self, path: str = "nova_screenshot.png"):
         """Save a screenshot of the current page state."""
