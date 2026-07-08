@@ -20,6 +20,7 @@ Action schema the LLM must reply with (and ONLY this, no prose):
 
 import os
 import json
+import time
 from dotenv import load_dotenv
 from cerebras.cloud.sdk import Cerebras
 
@@ -63,11 +64,21 @@ Rules:
 
 
 class NovaAgent:
-    def __init__(self, browser: NovaBrowser, max_steps: int = 15):
+    def __init__(self, browser: NovaBrowser, max_steps: int = 15, max_runtime_seconds: int = 120):
+        """
+        max_steps: hard ceiling on loop iterations (existing safety net).
+        max_runtime_seconds: hard ceiling on wall-clock time for the whole
+            run. This matters because a step can be slow (LLM latency, page
+            load, retries) even if the step COUNT looks reasonable - this
+            catches the case where max_steps alone wouldn't kick in for a
+            while yet, but the run is clearly taking too long.
+        """
         self.browser = browser
         self.max_steps = max_steps
+        self.max_runtime_seconds = max_runtime_seconds
         self.client = Cerebras(api_key=os.environ.get("CEREBRAS_API_KEY"))
         self.history: list[str] = []
+        self.llm_call_count = 0
 
     def _build_user_message(self, goal: str, summary: str) -> str:
         history_text = "\n".join(self.history) if self.history else "(no actions yet)"
@@ -84,6 +95,7 @@ elements:
 """
 
     def _ask_llm(self, goal: str, summary: str) -> dict:
+        self.llm_call_count += 1
         user_msg = self._build_user_message(goal, summary)
         response = self.client.chat.completions.create(
             model=MODEL,
@@ -170,10 +182,19 @@ elements:
         return f"unknown action: {action}"
 
     def run(self, goal: str) -> str:
-        """Run the agent loop until 'done' or max_steps is reached."""
+        """Run the agent loop until 'done', max_steps, or max_runtime_seconds."""
         print(f"\n[NovaAgent] Goal: {goal}\n")
+        start_time = time.time()
 
         for step in range(1, self.max_steps + 1):
+            elapsed = time.time() - start_time
+            if elapsed > self.max_runtime_seconds:
+                msg = (f"Stopped: exceeded max_runtime_seconds "
+                       f"({self.max_runtime_seconds}s) after {step - 1} steps "
+                       f"and {self.llm_call_count} LLM calls.")
+                print(f"[NovaAgent] {msg}")
+                return msg
+
             try:
                 summary, elements = get_page_summary(self.browser.page)
             except Exception as e:
@@ -199,8 +220,15 @@ elements:
             print(f"[Step {step}] Result: {log_entry}\n")
 
             if decision.get("action") == "done":
+                self._print_run_stats(step, start_time)
                 return decision.get("result", "Task completed.")
 
             self.browser.page.wait_for_timeout(1000)
 
+        self._print_run_stats(self.max_steps, start_time)
         return "Stopped: reached max_steps without the agent declaring done."
+
+    def _print_run_stats(self, steps_taken: int, start_time: float):
+        elapsed = time.time() - start_time
+        print(f"[NovaAgent] Run stats: {steps_taken} steps, "
+              f"{self.llm_call_count} LLM calls, {elapsed:.1f}s elapsed.")
