@@ -1,4 +1,4 @@
-"""
+﻿"""
 nova/planner.py
 
 Phase 2: Multi-step planning.
@@ -96,8 +96,6 @@ class NovaOrchestrator:
 
         results = []
         for i, subtask in enumerate(subtasks, 1):
-            # carry forward prior results as plain-text context so later
-            # subtasks can reference earlier findings
             context = ""
             if results:
                 context = "\n\nCONTEXT FROM PREVIOUS STEPS:\n" + "\n".join(
@@ -119,3 +117,18 @@ class NovaOrchestrator:
             "results": results,
             "final_summary": results[-1] if results else "No subtasks executed.",
         }
+
+    def run_queue(self, goals: list[str]) -> list[dict]:
+        """
+        Run multiple INDEPENDENT goals sequentially, one after another.
+        """
+        outcomes = []
+        for i, goal in enumerate(goals, 1):
+            print(f"\n{'='*60}")
+            print(f"[NovaOrchestrator] Queue item {i}/{len(goals)}: {goal}")
+            print(f"{'='*60}")
+            outcome = self.run(goal)
+            outcomes.append(outcome)
+
+        print(f"\n[NovaOrchestrator] Queue complete: {len(goals)} goals processed.")
+        return outcomes
