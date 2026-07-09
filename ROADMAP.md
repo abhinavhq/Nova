@@ -14,11 +14,11 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Agent loop (LLM decides one action at a time based on goal + history + page state)
 - [x] Cerebras integration (gpt-oss-120b)
 
-## Phase 1 — Reliability (NEXT)
+## Phase 1 — Reliability (DONE)
 - [x] Fix "done" detection so it doesn't loop/repeat actions
 - [x] Error recovery: retry when an element disappears or page doesn't load
 - [x] Handle popups/cookie banners automatically
-- [ ] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
+- [x] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
 
 ## Phase 2 — Multi-Step Planning
 - [ ] Planner: break a complex goal into ordered subtasks

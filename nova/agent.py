@@ -232,3 +232,5 @@ elements:
         elapsed = time.time() - start_time
         print(f"[NovaAgent] Run stats: {steps_taken} steps, "
               f"{self.llm_call_count} LLM calls, {elapsed:.1f}s elapsed.")
+
+
