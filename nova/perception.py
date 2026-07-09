@@ -125,4 +125,4 @@ def get_page_summary(page: Page) -> tuple[str, list[ElementInfo]]:
     """
     elements = get_page_elements(page)
     summary = format_elements_for_llm(elements)
-    return summary, elements
+    return summary , elements

@@ -1,31 +1,63 @@
-# Nova
+# Nova Roadmap
 
-Nova is an AI-powered browser agent. It understands natural language
-instructions and completes tasks on the web — navigating sites, filling
-forms, extracting data, and making decisions based on what it sees —
-instead of just answering questions.
+Nova is an AI-powered browser agent: understands natural language goals,
+controls a real browser, and completes multi-step web tasks — research,
+job hunting, shopping, travel planning, coding help, everyday automation.
 
-## Status
+Built step-by-step, testing each piece before moving to the next.
 
-🚧 Early development. Building step by step:
+---
 
-- [x] Step 1 — Browser control primitives (Playwright wrapper: navigate, click, type, screenshot)
-- [ ] Step 2 — Perception (turn a page into a compact, LLM-readable list of interactive elements)
-- [ ] Step 3 — Agent loop (LLM decides next action from perception + goal)
-- [ ] Step 4 — Task decomposition + memory (break complex goals into subtasks, remember preferences)
+## Phase 0 — Core Agent Loop (DONE)
+- [x] Browser control primitives (Playwright: navigate, click, type, screenshot, scroll)
+- [x] Perception (page -> numbered list of interactive elements + visible text context)
+- [x] Agent loop (LLM decides one action at a time based on goal + history + page state)
+- [x] Cerebras integration (gpt-oss-120b)
 
-## Requirements
+## Phase 1 — Reliability (DONE)
+- [x] Fix "done" detection so it doesn't loop/repeat actions
+- [x] Error recovery: retry when an element disappears or page doesn't load
+- [x] Handle popups/cookie banners automatically
+- [x] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
 
-```bash
-pip install playwright
-playwright install
-```
+## Phase 2 — Multi-Step Planning
+- [x] Planner: break a complex goal into ordered subtasks
+- [x] Subtask runner: run the agent loop per subtask, carry results forward
+- [ ] Task queue: give Nova multiple goals, run sequentially, report back
 
-## Usage (Step 1)
+## Phase 3 — Data Extraction & Output
+- [ ] Structured extraction: pull specific fields off a page into Python objects (title, price, deadline, etc.)
+- [ ] Spreadsheet output (.xlsx) from extracted data
+- [ ] Multi-source comparison: same data point across 3-5 sites, tabulated
+- [ ] Summarization: condense long pages/threads instead of raw extraction
+- [ ] PDF handling: download + read PDFs encountered mid-task
 
-```bash
-python test_browser.py
-```
+## Phase 4 — Generated Content
+- [ ] Personalized cover letters from job description + base resume
+- [ ] Resume/cover letter tailoring to match keywords
+- [ ] Email drafting from web content ("summarize this page into an email")
+- [ ] Itinerary write-ups (travel day-by-day plans)
 
-Opens a real browser window, navigates a couple of pages, and saves screenshots
-to confirm the automation layer works end to end.
+## Phase 5 — Safety & Confirmation
+- [ ] Sensitive-action confirmation (submit, purchase, send) — pause and ask before executing
+- [ ] Dry-run mode: "show me what you'd do" without executing
+- [ ] Auto-fill from saved profile (name, email, experience) — always confirm before submit
+
+## Phase 6 — Domain Workflows
+- [ ] Job hunting: application tracking spreadsheet across sessions, deadline flags
+- [ ] Shopping: price tracking + alerts, review sentiment aggregation, cart building
+- [ ] Travel: flight/hotel comparison, flexible date search, booking with confirmation
+- [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
+- [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
+
+## Phase 7 — Platform & Integration
+- [ ] Headless/background mode toggle once trust is established
+- [ ] Session memory: preferences persist across runs (could reuse JOI's SQLite memory)
+- [ ] Voice control via JOI ("Nova, find me AI internships")
+- [ ] Multi-site workflows: search one site, cross-reference another, combine results
+
+---
+
+## Working principle
+Every checkbox above gets its own small test script before moving to the next.
+No skipping ahead — each phase depends on the reliability of the one before it.
