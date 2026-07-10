@@ -15,6 +15,8 @@ from nova.browser import NovaBrowser
 from nova.perception import get_page_elements, get_page_summary, format_elements_for_llm
 from nova.agent import NovaAgent
 from nova.planner import NovaPlanner, NovaOrchestrator
+from nova.extraction import extract_structured_data
+from nova.export import save_to_xlsx
 
 __all__ = [
     "NovaBrowser",
@@ -24,4 +26,6 @@ __all__ = [
     "NovaAgent",
     "NovaPlanner",
     "NovaOrchestrator",
+    "extract_structured_data",
+    "save_to_xlsx",
 ]

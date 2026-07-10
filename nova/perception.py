@@ -118,11 +118,58 @@ def format_elements_for_llm(elements: list[ElementInfo]) -> str:
     return "\n".join(lines)
 
 
+def get_page_full_text(page: Page, max_chars: int = 6000) -> str:
+    """
+    Grab a larger chunk of the page's visible text than get_page_text_context
+    provides. Used for DATA EXTRACTION tasks (Phase 3), where the LLM needs
+    enough raw content to pull out structured fields (titles, prices,
+    ratings, etc.) - not just enough to know where it landed.
+    """
+    try:
+        body_text = page.locator("body").inner_text()
+        return " ".join(body_text.split())[:max_chars]
+    except Exception:
+        return "(no readable text content found)"
+
+
+def get_page_text_context(page: Page, max_chars: int = 300) -> str:
+    """
+    Grab a short snippet of the page's main visible heading/text so the
+    LLM can tell WHERE it landed (e.g. "Artificial intelligence" article),
+    not just what's clickable. This is what lets the agent recognize
+    success instead of repeating an action forever.
+    """
+    try:
+        # prefer the first visible h1, fall back to page title area
+        heading = page.locator("h1").first
+        heading_text = heading.inner_text().strip() if heading.count() > 0 else ""
+    except Exception:
+        heading_text = ""
+
+    try:
+        body_text = page.locator("body").inner_text()
+        body_snippet = " ".join(body_text.split())[:max_chars]
+    except Exception:
+        body_snippet = ""
+
+    parts = []
+    if heading_text:
+        parts.append(f"main heading: {heading_text}")
+    if body_snippet:
+        parts.append(f"visible text snippet: {body_snippet}")
+    return "\n".join(parts) if parts else "(no readable text content found)"
+
+
 def get_page_summary(page: Page) -> tuple[str, list[ElementInfo]]:
     """
     Convenience wrapper: returns (text_summary, elements) for the current
     page, ready to hand to the LLM and later map an ID back to an action.
+
+    text_summary now includes a short text-context block ahead of the
+    element list, so the LLM can tell what page it's actually on.
     """
     elements = get_page_elements(page)
-    summary = format_elements_for_llm(elements)
-    return summary , elements
+    element_summary = format_elements_for_llm(elements)
+    text_context = get_page_text_context(page)
+    summary = f"{text_context}\n\ninteractive elements:\n{element_summary}"
+    return summary, elements
