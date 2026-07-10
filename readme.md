@@ -20,10 +20,10 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Handle popups/cookie banners automatically
 - [x] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
 
-## Phase 2 — Multi-Step Planning
+## Phase 2 — Multi-Step Planning (DONE)
 - [x] Planner: break a complex goal into ordered subtasks
 - [x] Subtask runner: run the agent loop per subtask, carry results forward
-- [ ] Task queue: give Nova multiple goals, run sequentially, report back
+- [x] Task queue: give Nova multiple goals, run sequentially, report back
 
 ## Phase 3 — Data Extraction & Output
 - [ ] Structured extraction: pull specific fields off a page into Python objects (title, price, deadline, etc.)
