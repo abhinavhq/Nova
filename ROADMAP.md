@@ -1,4 +1,4 @@
-v# Nova Roadmap
+# Nova Roadmap
 
 Nova is an AI-powered browser agent: understands natural language goals,
 controls a real browser, and completes multi-step web tasks — research,
@@ -25,12 +25,12 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Subtask runner: run the agent loop per subtask, carry results forward
 - [x] Task queue: give Nova multiple goals, run sequentially, report back
 
-## Phase 3 — Data Extraction & Output
+## Phase 3 — Data Extraction & Output (DONE)
 - [x] Structured extraction: pull specific fields off a page into Python objects (title, price, deadline, etc.)
 - [x] Spreadsheet output (.xlsx) from extracted data
 - [x] Multi-source comparison: same data point across 3-5 sites, tabulated
-- [ ] Summarization: condense long pages/threads instead of raw extraction
-- [ ] PDF handling: download + read PDFs encountered mid-task
+- [x] Summarization: condense long pages/threads instead of raw extraction
+- [x] PDF handling: download + read PDFs encountered mid-task
 
 ## Phase 4 — Generated Content
 - [ ] Personalized cover letters from job description + base resume
