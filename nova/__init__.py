@@ -20,6 +20,8 @@ from nova.export import save_to_xlsx
 from nova.compare import compare_across_sources
 from nova.summarize import summarize_page
 from nova.pdf_handler import download_pdf, extract_pdf_text, read_pdf_from_url
+from nova.generate import generate_cover_letter, draft_email_from_content, generate_itinerary
+from nova.profile import load_profile, save_profile, match_field_to_profile, autofill_form
 
 __all__ = [
     "NovaBrowser",
@@ -36,4 +38,11 @@ __all__ = [
     "download_pdf",
     "extract_pdf_text",
     "read_pdf_from_url",
+    "generate_cover_letter",
+    "draft_email_from_content",
+    "generate_itinerary",
+    "load_profile",
+    "save_profile",
+    "match_field_to_profile",
+    "autofill_form",
 ]

@@ -63,19 +63,45 @@ Rules:
 """
 
 
+SENSITIVE_KEYWORDS = [
+    "submit", "buy", "purchase", "pay", "checkout", "confirm order",
+    "place order", "send", "delete", "remove", "cancel subscription",
+    "apply", "sign up", "subscribe", "book now", "reserve",
+    "add to basket", "add to cart", "basket", "cart", "checkout now",
+]
+
+
+def _is_sensitive(element_text: str) -> bool:
+    """Check if an element's text matches a known sensitive-action keyword."""
+    text = (element_text or "").lower()
+    return any(keyword in text for keyword in SENSITIVE_KEYWORDS)
+
+
 class NovaAgent:
-    def __init__(self, browser: NovaBrowser, max_steps: int = 15, max_runtime_seconds: int = 120):
+    def __init__(
+        self,
+        browser: NovaBrowser,
+        max_steps: int = 15,
+        max_runtime_seconds: int = 120,
+        dry_run: bool = False,
+        require_confirmation: bool = True,
+    ):
         """
-        max_steps: hard ceiling on loop iterations (existing safety net).
-        max_runtime_seconds: hard ceiling on wall-clock time for the whole
-            run. This matters because a step can be slow (LLM latency, page
-            load, retries) even if the step COUNT looks reasonable - this
-            catches the case where max_steps alone wouldn't kick in for a
-            while yet, but the run is clearly taking too long.
+        dry_run: if True, NEVER actually executes actions - just logs what
+            WOULD happen. Use this to preview a task before trusting it to
+            run for real.
+        require_confirmation: if True (default), pauses and asks for a
+            y/n confirmation in the terminal before executing any action
+            on an element whose text matches a sensitive keyword (submit,
+            buy, pay, delete, apply, etc.) - even if dry_run is False.
+            Set to False only if you're confident and want it fully
+            unattended (e.g. read-only research tasks).
         """
         self.browser = browser
         self.max_steps = max_steps
         self.max_runtime_seconds = max_runtime_seconds
+        self.dry_run = dry_run
+        self.require_confirmation = require_confirmation
         self.client = Cerebras(api_key=os.environ.get("CEREBRAS_API_KEY"))
         self.history: list[str] = []
         self.llm_call_count = 0
@@ -119,12 +145,41 @@ elements:
     def _execute(self, decision: dict, elements) -> str:
         """
         Execute one decision, return a short text log entry for history.
-        Wrapped in retries + exception handling so a single flaky action
-        (element not ready, page still loading, element vanished) doesn't
-        crash the whole agent run — it just gets logged and the loop
-        continues, letting the LLM see the failure and adapt.
+
+        Before touching the page, this checks:
+        1. dry_run - if set, log what WOULD happen and return without acting
+        2. sensitive-action confirmation - if the target element's text
+           matches a sensitive keyword (submit, buy, pay, delete, apply,
+           etc.), pause and ask for explicit y/n confirmation in the
+           terminal before proceeding.
         """
         action = decision.get("action")
+
+        # figure out the target element's text (if any) up front, so both
+        # the dry-run log and the confirmation prompt can describe it
+        target_el = None
+        if action in ("click", "type"):
+            target_el = next((e for e in elements if e.id == decision.get("id")), None)
+        target_text = target_el.text or target_el.attrs if target_el else ""
+
+        if self.dry_run:
+            preview = f"[DRY RUN] Would {action}"
+            if target_el:
+                preview += f" on [{target_el.id}] '{target_text}'"
+            if action == "type":
+                preview += f" with text: {decision.get('text', '')!r}"
+            if action == "goto":
+                preview += f" to {decision.get('url', '')}"
+            print(f"[NovaAgent] {preview}")
+            return preview
+
+        if self.require_confirmation and action == "click" and _is_sensitive(target_text):
+            print(f"\n[NovaAgent] ⚠ Sensitive action detected: click on "
+                  f"'{target_text}' (matches a sensitive keyword).")
+            answer = input("  Proceed? [y/N]: ").strip().lower()
+            if answer != "y":
+                return f"skipped sensitive click on [{target_el.id}] '{target_text}' - not confirmed by user"
+
         max_retries = 2
         retry_delay_ms = 800
 
@@ -232,5 +287,3 @@ elements:
         elapsed = time.time() - start_time
         print(f"[NovaAgent] Run stats: {steps_taken} steps, "
               f"{self.llm_call_count} LLM calls, {elapsed:.1f}s elapsed.")
-
-

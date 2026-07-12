@@ -33,14 +33,14 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] PDF handling: download + read PDFs encountered mid-task
 
 ## Phase 4 — Generated Content
-- [ ] Personalized cover letters from job description + base resume
-- [ ] Resume/cover letter tailoring to match keywords
-- [ ] Email drafting from web content ("summarize this page into an email")
-- [ ] Itinerary write-ups (travel day-by-day plans)
+- [x] Personalized cover letters from job description + base resume
+- [x] Resume/cover letter tailoring to match keywords
+- [x] Email drafting from web content ("summarize this page into an email")
+- [x] Itinerary write-ups (travel day-by-day plans)
 
 ## Phase 5 — Safety & Confirmation
-- [ ] Sensitive-action confirmation (submit, purchase, send) — pause and ask before executing
-- [ ] Dry-run mode: "show me what you'd do" without executing
+- [x] Sensitive-action confirmation (submit, purchase, send) — pause and ask before executing
+- [x] Dry-run mode: "show me what you'd do" without executing
 - [ ] Auto-fill from saved profile (name, email, experience) — always confirm before submit
 
 ## Phase 6 — Domain Workflows
