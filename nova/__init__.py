@@ -18,6 +18,8 @@ from nova.planner import NovaPlanner, NovaOrchestrator
 from nova.extraction import extract_structured_data
 from nova.export import save_to_xlsx
 from nova.compare import compare_across_sources
+from nova.summarize import summarize_page
+from nova.pdf_handler import download_pdf, extract_pdf_text, read_pdf_from_url
 
 __all__ = [
     "NovaBrowser",
@@ -30,4 +32,8 @@ __all__ = [
     "extract_structured_data",
     "save_to_xlsx",
     "compare_across_sources",
+    "summarize_page",
+    "download_pdf",
+    "extract_pdf_text",
+    "read_pdf_from_url",
 ]
