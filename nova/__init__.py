@@ -17,6 +17,7 @@ from nova.agent import NovaAgent
 from nova.planner import NovaPlanner, NovaOrchestrator
 from nova.extraction import extract_structured_data
 from nova.export import save_to_xlsx
+from nova.compare import compare_across_sources
 
 __all__ = [
     "NovaBrowser",
@@ -28,4 +29,5 @@ __all__ = [
     "NovaOrchestrator",
     "extract_structured_data",
     "save_to_xlsx",
+    "compare_across_sources",
 ]
