@@ -36,7 +36,7 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Personalized cover letters from job description + base resume
 - [x] Resume/cover letter tailoring to match keywords
 - [x] Email drafting from web content ("summarize this page into an email")
-- [x] Itinerary write-ups (travel day-by-day plans)
+- [x] Itinerary write-ups (travel day-by-day plans) — CAVEAT: found to sometimes misstate source facts (e.g. shifted a flight date incorrectly in test_travel.py); treat as a narrative convenience layer, not a source of truth
 
 ## Phase 5 — Safety & Confirmation (DONE)
 - [x] Sensitive-action confirmation (submit, purchase, send) — pause and ask before executing
@@ -46,7 +46,8 @@ Built step-by-step, testing each piece before moving to the next.
 ## Phase 6 — Domain Workflows
 - [x] Job hunting: application tracking spreadsheet across sessions, deadline flags
 - [x] Shopping: price tracking + alerts, review sentiment aggregation, cart building
-- [ ] Travel: flight/hotel comparison, flexible date search, booking with confirmation
+- [x] Travel: flight/hotel comparison + ranking/filtering confirmed accurate (find_best_options, filter_by_max_price); flexible date/price search works
+- [x] Booking with confirmation — covered by NovaAgent's existing sensitive-action gate ("book now"/"reserve" already in SENSITIVE_KEYWORDS from Phase 5, not separately re-tested)
 - [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
 - [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
 

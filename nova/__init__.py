@@ -26,6 +26,7 @@ from nova.tracker import add_application, update_status, list_applications, flag
 from nova.price_tracker import record_price, get_price_history, list_tracked_products
 from nova.reviews import aggregate_reviews
 from nova.cart import add_to_cart, remove_from_cart, list_cart, cart_total
+from nova.travel import find_best_options, filter_by_max_price, summarize_price_range
 
 __all__ = [
     "NovaBrowser",
@@ -61,4 +62,7 @@ __all__ = [
     "remove_from_cart",
     "list_cart",
     "cart_total",
+    "find_best_options",
+    "filter_by_max_price",
+    "summarize_price_range",
 ]
