@@ -8,3 +8,5 @@ nova_downloads/
 nova_applications.json
 
 *.ics
+
+nova_memory.json

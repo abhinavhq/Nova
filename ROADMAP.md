@@ -54,7 +54,7 @@ Built step-by-step, testing each piece before moving to the next.
 
 ## Phase 7 — Platform & Integration
 - [x] Headless/background mode toggle once trust is established — confirmed via test_headless.py, ran correctly with no visible window
-- [ ] Session memory: preferences persist across runs (could reuse JOI's SQLite memory)
+- [x] Session memory: preferences persist across runs (could reuse JOI's SQLite memory) — confirmed via test_memory.py: remember/recall/forget/context-string all working. Currently JSON-based; migrating to JOI's SQLite memory is a future integration step, not yet done.
 - [ ] Voice control via JOI ("Nova, find me AI internships")
 - [ ] Multi-site workflows: search one site, cross-reference another, combine results
 
