@@ -6,3 +6,5 @@ nova_downloads/
 nova_downloads/
 
 nova_applications.json
+
+*.ics
