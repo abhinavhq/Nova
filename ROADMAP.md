@@ -45,7 +45,7 @@ Built step-by-step, testing each piece before moving to the next.
 
 ## Phase 6 — Domain Workflows
 - [x] Job hunting: application tracking spreadsheet across sessions, deadline flags
-- [x] Shopping: price tracking + alerts (done) — review sentiment aggregation, cart building (not yet built)
+- [x] Shopping: price tracking + alerts, review sentiment aggregation, cart building
 - [ ] Travel: flight/hotel comparison, flexible date search, booking with confirmation
 - [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
 - [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
