@@ -24,6 +24,8 @@ from nova.generate import generate_cover_letter, draft_email_from_content, gener
 from nova.profile import load_profile, save_profile, match_field_to_profile, autofill_form
 from nova.tracker import add_application, update_status, list_applications, flag_upcoming_deadlines
 from nova.price_tracker import record_price, get_price_history, list_tracked_products
+from nova.reviews import aggregate_reviews
+from nova.cart import add_to_cart, remove_from_cart, list_cart, cart_total
 
 __all__ = [
     "NovaBrowser",
@@ -54,4 +56,9 @@ __all__ = [
     "record_price",
     "get_price_history",
     "list_tracked_products",
+    "aggregate_reviews",
+    "add_to_cart",
+    "remove_from_cart",
+    "list_cart",
+    "cart_total",
 ]

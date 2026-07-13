@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Wireless Earbuds Pro",
+    "price": 89.99,
+    "url": "https://example.com/1",
+    "source": "Site A"
+  },
+  {
+    "title": "Laptop Stand",
+    "price": 34.99,
+    "url": "https://example.com/3",
+    "source": "Site A"
+  }
+]
