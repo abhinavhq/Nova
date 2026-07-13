@@ -132,7 +132,41 @@ def get_page_full_text(page: Page, max_chars: int = 6000) -> str:
         return "(no readable text content found)"
 
 
-def get_page_text_context(page: Page, max_chars: int = 300) -> str:
+def get_visible_viewport_text(page: Page, max_chars: int = 2000) -> str:
+    """
+    Grab text from elements currently visible within the browser's
+    viewport (accounting for scroll position) - not just the top of the
+    page. This is what makes scrolling actually useful to the agent:
+    without this, inner_text() on body always returns text from the TOP
+    of the page regardless of scroll, so a scrolled-down agent would be
+    "blind" to what it scrolled to.
+    """
+    try:
+        text = page.evaluate("""
+            () => {
+                const vh = window.innerHeight;
+                let result = '';
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+                let node = walker.currentNode;
+                while (node && result.length < 4000) {
+                    if (node.children.length === 0) {
+                        const rect = node.getBoundingClientRect();
+                        if (rect.bottom >= 0 && rect.top <= vh && rect.height > 0) {
+                            const t = (node.innerText || '').trim();
+                            if (t) result += t + ' ';
+                        }
+                    }
+                    node = walker.nextNode();
+                }
+                return result;
+            }
+        """)
+        return " ".join(text.split())[:max_chars]
+    except Exception:
+        return ""
+
+
+def get_page_text_context(page: Page, max_chars: int = 2000) -> str:
     """
     Grab a short snippet of the page's main visible heading/text so the
     LLM can tell WHERE it landed (e.g. "Artificial intelligence" article),
@@ -165,11 +199,27 @@ def get_page_summary(page: Page) -> tuple[str, list[ElementInfo]]:
     Convenience wrapper: returns (text_summary, elements) for the current
     page, ready to hand to the LLM and later map an ID back to an action.
 
-    text_summary now includes a short text-context block ahead of the
-    element list, so the LLM can tell what page it's actually on.
+    text_summary combines the page's heading/identity (so the LLM knows
+    WHERE it is) with viewport-aware visible text (so the LLM can see
+    WHAT's currently on screen after scrolling) and the element list.
     """
     elements = get_page_elements(page)
     element_summary = format_elements_for_llm(elements)
-    text_context = get_page_text_context(page)
+
+    try:
+        heading = page.locator("h1").first
+        heading_text = heading.inner_text().strip() if heading.count() > 0 else ""
+    except Exception:
+        heading_text = ""
+
+    visible_text = get_visible_viewport_text(page)
+
+    context_parts = []
+    if heading_text:
+        context_parts.append(f"page heading: {heading_text}")
+    if visible_text:
+        context_parts.append(f"currently visible text on screen: {visible_text}")
+    text_context = "\n".join(context_parts) if context_parts else "(no readable text content found)"
+
     summary = f"{text_context}\n\ninteractive elements:\n{element_summary}"
     return summary, elements

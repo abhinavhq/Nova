@@ -48,7 +48,8 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Shopping: price tracking + alerts, review sentiment aggregation, cart building
 - [x] Travel: flight/hotel comparison + ranking/filtering confirmed accurate (find_best_options, filter_by_max_price); flexible date/price search works
 - [x] Booking with confirmation — covered by NovaAgent's existing sensitive-action gate ("book now"/"reserve" already in SENSITIVE_KEYWORDS from Phase 5, not separately re-tested)
-- [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
+- [x] Coding: docs lookup confirmed working (lookup_documentation via docs.python.org) — required fixing a real perception bug: agent could scroll but couldn't "see" what it scrolled to (get_page_text_context always read from top of page). Fixed with get_visible_viewport_text (viewport-aware text extraction), which also improves every other agent-based task on long/content-heavy pages.
+- [ ] GitHub issue triage, Stack Overflow research (functions written in coding_helper.py, not yet individually tested)
 - [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
 
 ## Phase 7 — Platform & Integration
