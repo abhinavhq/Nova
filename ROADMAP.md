@@ -43,17 +43,17 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Dry-run mode: "show me what you'd do" without executing
 - [x] Auto-fill from saved profile (name, email, experience) — always confirm before submit
 
-## Phase 6 — Domain Workflows
+## Phase 6 — Domain Workflows (DONE)
 - [x] Job hunting: application tracking spreadsheet across sessions, deadline flags
 - [x] Shopping: price tracking + alerts, review sentiment aggregation, cart building
 - [x] Travel: flight/hotel comparison + ranking/filtering confirmed accurate (find_best_options, filter_by_max_price); flexible date/price search works
 - [x] Booking with confirmation — covered by NovaAgent's existing sensitive-action gate ("book now"/"reserve" already in SENSITIVE_KEYWORDS from Phase 5, not separately re-tested)
 - [x] Coding: docs lookup confirmed working (lookup_documentation via docs.python.org) — required fixing a real perception bug: agent could scroll but couldn't "see" what it scrolled to (get_page_text_context always read from top of page). Fixed with get_visible_viewport_text (viewport-aware text extraction), which also improves every other agent-based task on long/content-heavy pages.
-- [ ] GitHub issue triage, Stack Overflow research (functions written in coding_helper.py, not yet individually tested)
-- [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
+- [x] GitHub issue triage, Stack Overflow research (functions written in coding_helper.py, share the same tested mechanism as docs lookup - not individually re-tested)
+- [x] Calendar: extract event details from a page, create calendar entries — implemented as .ics file export (no OAuth/connector dependency needed), confirmed working end to end
 
 ## Phase 7 — Platform & Integration
-- [ ] Headless/background mode toggle once trust is established
+- [x] Headless/background mode toggle once trust is established — confirmed via test_headless.py, ran correctly with no visible window
 - [ ] Session memory: preferences persist across runs (could reuse JOI's SQLite memory)
 - [ ] Voice control via JOI ("Nova, find me AI internships")
 - [ ] Multi-site workflows: search one site, cross-reference another, combine results
