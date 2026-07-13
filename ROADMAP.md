@@ -38,14 +38,14 @@ Built step-by-step, testing each piece before moving to the next.
 - [x] Email drafting from web content ("summarize this page into an email")
 - [x] Itinerary write-ups (travel day-by-day plans)
 
-## Phase 5 — Safety & Confirmation
+## Phase 5 — Safety & Confirmation (DONE)
 - [x] Sensitive-action confirmation (submit, purchase, send) — pause and ask before executing
 - [x] Dry-run mode: "show me what you'd do" without executing
-- [ ] Auto-fill from saved profile (name, email, experience) — always confirm before submit
+- [x] Auto-fill from saved profile (name, email, experience) — always confirm before submit
 
 ## Phase 6 — Domain Workflows
-- [ ] Job hunting: application tracking spreadsheet across sessions, deadline flags
-- [ ] Shopping: price tracking + alerts, review sentiment aggregation, cart building
+- [x] Job hunting: application tracking spreadsheet across sessions, deadline flags
+- [x] Shopping: price tracking + alerts (done) — review sentiment aggregation, cart building (not yet built)
 - [ ] Travel: flight/hotel comparison, flexible date search, booking with confirmation
 - [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
 - [ ] Calendar: extract event details from a page, create calendar entries (needs connector)

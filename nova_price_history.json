@@ -1,0 +1,24 @@
+{
+  "Sony WH-1000XM5 Headphones": {
+    "url": "https://example.com/headphones",
+    "target_price": 280.0,
+    "checks": [
+      {
+        "price": 349.99,
+        "date": "2026-07-13 11:20"
+      },
+      {
+        "price": 329.99,
+        "date": "2026-07-13 11:20"
+      },
+      {
+        "price": 279.99,
+        "date": "2026-07-13 11:20"
+      },
+      {
+        "price": 299.99,
+        "date": "2026-07-13 11:20"
+      }
+    ]
+  }
+}
