@@ -17,7 +17,7 @@ Built step-by-step, testing each piece before moving to the next.
 ## Phase 1 — Reliability (DONE)
 - [x] Fix "done" detection so it doesn't loop/repeat actions
 - [x] Error recovery: retry when an element disappears or page doesn't load
-- [x] Handle popups/cookie banners automatically
+-[x] Handle popups/cookie banners automatically
 - [x] Rate/step/cost limiting so a bad loop can't burn API credits or run forever
 
 ## Phase 2 — Multi-Step Planning (DONE)
