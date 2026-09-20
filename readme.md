@@ -112,7 +112,7 @@ Built step-by-step, testing each piece before moving to the next.
 - [ ] Coding: docs lookup, GitHub issue triage, Stack Overflow research
 - [ ] Calendar: extract event details from a page, create calendar entries (needs connector)
 
-## Phase 7 — Platform & Integration
+# Phase 7 — Platform & Integration
 - [ ] Headless/background mode toggle once trust is established
 - [ ] Session memory: preferences persist across runs (could reuse JOI's SQLite memory)
 - [ ] Voice control via JOI ("Nova, find me AI internships")
